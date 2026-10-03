@@ -27,7 +27,7 @@ def test_calc_command():
 
 def test_convert_command():
     result = subprocess.run(
-        ["python3", "-m", "toolkit", "convert", "1000", "g", "kg"],
+        ["python3", "-m", "toolkit", "convert", "1500", "--from", "g", "--to", "kg"],
         capture_output=True,
         text=True,
         check=False
@@ -38,7 +38,7 @@ def test_convert_command():
 
 def test_convert_incompatible_units():
     result = subprocess.run(
-        ["python3", "-m", "toolkit", "convert", "100", "kg", "m"],
+        ["python3", "-m", "toolkit", "convert", "123", "--from", "kg", "--to", "m"],
         capture_output=True,
         text=True,
         check=False

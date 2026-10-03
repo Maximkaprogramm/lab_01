@@ -8,21 +8,6 @@ from toolkit.errors import (
 )
 
 
-def round_result(value: float) -> float:
-    '''
-    На вход подается: число (тип float);
-    Округляет значение float до четырех знаков после запятой;
-    Если исходное значение не равно нулю, а после округления получается ноль,
-    то возвращает исходное значение;
-    Возвращает: значение типа float;
-    '''
-    rounded = round(value, 4)
-    if value != 0 and rounded == 0:
-        return value
-
-    return rounded
-
-
 def validate(tokens: list[str]) -> bool:
     '''
     На вход подается: список элементов (тип list[str]);
@@ -113,7 +98,7 @@ def precedence(operator: str) -> int:
     elif operator in "*/%" or operator == "//":
         return 2
 
-def tokenize(strings: str) -> list[str]:
+def tokenize(string: str) -> list[str]:
     '''
     На вход подается: строка (тип str) - арифметическое выражение;
     Разбивает строку на токены: числа и операторы;
@@ -125,15 +110,15 @@ def tokenize(strings: str) -> list[str]:
     current = ""
     expect_number = True
     i = 0
-    while i < len(strings):
-        char = strings[i]
+    while i < len(string):
+        char = string[i]
         if char.isdigit():
             current += char
             expect_number = False
         elif char == "." and "." not in current and len(current) > 0 or char in "+-" and expect_number is True:
             current += char
         elif char in "+-*/%":
-            if char == "/" and (i + 1) < len(strings) and strings[i + 1] == "/":
+            if char == "/" and (i + 1) < len(string) and string[i + 1] == "/":
                 if current:
                     tokens.append(current)
                     current = ""
@@ -144,7 +129,6 @@ def tokenize(strings: str) -> list[str]:
                 if current:
                     tokens.append(current)
                     current = ""
-
                 tokens.append(char)
                 expect_number = True
         elif char.isspace():

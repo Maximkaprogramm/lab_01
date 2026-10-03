@@ -3,7 +3,7 @@ import pytest
 from toolkit.converter import converter
 from toolkit.errors import (
     IncompatibleUnitsError,
-    InvalidTemperatureError,
+    UnacceptableTemperatureError,
     UnknownUnitError,
 )
 
@@ -71,9 +71,9 @@ def test_converter_incompatible_units():
         converter(9, "mm", "k")
 
 def test_converter_invalid_temperature():
-    with pytest.raises(InvalidTemperatureError):
+    with pytest.raises(UnacceptableTemperatureError):
         converter(-323, "c", "k")
-    with pytest.raises(InvalidTemperatureError):
+    with pytest.raises(UnacceptableTemperatureError):
         converter(-15, "k", "c")
-    with pytest.raises(InvalidTemperatureError):
+    with pytest.raises(UnacceptableTemperatureError):
         converter(-7, "k", "f")

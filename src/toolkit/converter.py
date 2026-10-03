@@ -1,6 +1,6 @@
 from toolkit.errors import (
     IncompatibleUnitsError,
-    InvalidTemperatureError,
+    UnacceptableTemperatureError,
     UnknownUnitError,
 )
 
@@ -62,7 +62,7 @@ def convert_temperature(value: float, from_unit: str, to_unit: str) -> float:
     Поддерживаемые единицы измерения: c, k, f;
     Выполняет преобразования между единицами измерения;
     Важно: проверяет допустимые значения температур;
-    Если температура выходит из допустимого диапазона - вызывается ошибка (InvalidTemperatureError);
+    Если температура выходит из допустимого диапазона - вызывается ошибка (UnacceptableTemperatureErro);
     Если введены неподдерживаемые единицы измерения - вызывается ошибка (UnknownUnitError);
     Возвращает: число с плавающей точкой (тип float);
     '''
@@ -70,40 +70,39 @@ def convert_temperature(value: float, from_unit: str, to_unit: str) -> float:
         if value >= -273.15:
             return value * 9 / 5 + 32
         else:
-            raise InvalidTemperatureError("Invalid temperature")
+            raise UnacceptableTemperatureError("Invalid temperature")
     elif from_unit == "c" and to_unit == "k":
         if value >= -273.15:
             return value + 273.15
         else:
-            raise InvalidTemperatureError("Invalid temperature")
+            raise UnacceptableTemperatureError("Invalid temperature")
     elif from_unit == 'k' and to_unit == 'c':
         if value >= 0:
             return value - 273.15
         else:
-            raise InvalidTemperatureError("Invalid temperature")
+            raise UnacceptableTemperatureError("Invalid temperature")
     elif from_unit == "f" and to_unit == "c":
         celsius = (value - 32) * 5 / 9
         if celsius >= -273.15:
             return celsius
         else:
-            raise InvalidTemperatureError("Invalid temperature")
+            raise UnacceptableTemperatureError("Invalid temperature")
     elif from_unit == "f" and to_unit == "k":
         kelvin = (value - 32) * 5 / 9 + 273.15
         if kelvin >= 0:
             return kelvin
         else:
-            raise InvalidTemperatureError("Invalid temperature")
+            raise UnacceptableTemperatureError("Invalid temperature")
     elif from_unit == "k" and to_unit == "f":
         if value >= 0:
             return (value - 273.15) * 9 / 5 + 32
         else:
-            raise InvalidTemperatureError("Invalid temperature")
+            raise UnacceptableTemperatureError("Invalid temperature")
     else:
         raise UnknownUnitError("Unknown unit")
 
 def round_result(value: float) -> float:
     round_value = round(value, 2)
-
     if round_value == 0 and value != 0:
         return value
     return round_value

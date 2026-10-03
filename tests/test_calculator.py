@@ -1,6 +1,6 @@
 import pytest
 
-from toolkit.calculator import calculate, round_result, tokenize, validate
+from toolkit.calculator import calculate, tokenize, validate
 from toolkit.errors import (
     ConsecutiveOperatorsError,
     EmptyExpressionError,
@@ -16,10 +16,8 @@ def test_tokenize_addition_subtraction():
 def test_tokenize_integer_division():
     assert tokenize("12 // 5") == ["12", "//", "5"]
 
-def test_tokenize_float():
+def test_tokenize_float_space():
     assert tokenize("24.6 + 12.1 * 2.2") == ["24.6", "+", "12.1", "*", "2.2"]
-
-def test_tokenize_space():
     assert tokenize("12    +  12.2  /     21  ") == ["12", "+", "12.2", "/", "21"]
 
 def test_tokenize_emptiness():
@@ -30,8 +28,9 @@ def test_tokenize_invalid_symbol():
     with pytest.raises(InvalidSymbolError):
         tokenize("101 + 2 - zzzz")
     
-def test_validate_correct_entry():
+def test_validate_correct():
     assert validate(["21", "*", "-2"]) is True
+    assert validate(["12", "/", "-2", "+", "11"]) is True
 
 def test_validate_several_operators_nearby():
     with pytest.raises(ConsecutiveOperatorsError):
@@ -56,7 +55,7 @@ def test_calculate_multiplication_division():
     assert calculate(["999", "/", "333", "*", "70"]) == 210
     assert calculate(["525", "/", "25", "*", "64", "/", "12"]) == 112
 
-def test_calculate_priority():
+def test_calculate_priority_operators():
     assert calculate(["25", "-", "5", "/", "5"]) == 24
     assert calculate(["1", "+", "33", "*", "3", "/", "99"]) == 2
     assert calculate(["2", "*", "8", "/", "16", "-", "1"]) == 0
@@ -81,22 +80,22 @@ def test_calculate_division_by_zero():
     with pytest.raises(ZeroDivisionError):
         calculate(["10", "//", "0", "%", "2"])
 
-def test_calculate_mixed_operators():
+def test_calculate_more_operators():
     assert calculate(["39", "*", "-5", "+", "102", "%", "2", "-", "15"]) == -210
     assert calculate(["-9", "+", "-5", "*", "11", "%", "12", "*", "15", "-", "1"]) == 65
     assert calculate(["15", "-", "15", "*", "1100002", "%", "125", "-", "15"]) == -30
     assert calculate(["12", "+", "1754", "-", "2311", "-", "55", "+", "600"]) == 0
 
 def test_calculate_numbers_small():
-    assert round_result(calculate(["11", "/", "3"])) == 3.6667
-    assert round_result(calculate(["11", "/", "448"])) == 0.0246
-    assert round_result(calculate(["111554", "/", "448"])) == 249.0045
-    assert round_result(calculate(["0.003", "+", "0.003"])) == 0.006
-    assert round_result(calculate(["0.2", "+", "0.1"])) == 0.3
-    assert round_result(calculate(["1", "/", "3"])) == 0.3333
-    assert round_result(calculate(["-0.0082", "-", "0.0089"])) == -0.0171
+    assert calculate(["11", "/", "3"]) == 11 / 3
+    assert calculate(["11", "/", "448"]) == 11 / 448
+    assert calculate(["111554", "/", "448"]) == 111554 / 448
+    assert calculate(["0.003", "+", "0.003"]) == 0.006
+    assert calculate(["0.2", "+", "0.1"]) == 0.2 + 0.1
+    assert calculate(["1", "/", "3"]) == 1 / 3
+    assert calculate(["-0.0082", "-", "0.0089"]) == -0.0171
 
-def test_unary_sign_with_spaces():
+def test_unary_sign_with_space():
     assert calculate(tokenize("107 +  -  92")) == 15
     assert calculate(tokenize("128 + 92 - +7")) == 213
     assert calculate(tokenize("0 +  -  9999")) == -9999
