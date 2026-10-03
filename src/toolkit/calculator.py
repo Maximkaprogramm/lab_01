@@ -1,4 +1,4 @@
-from decimal import ROUND_HALF_UP, Decimal
+
 
 from toolkit.errors import (
     ConsecutiveOperatorsError,
@@ -8,23 +8,19 @@ from toolkit.errors import (
 )
 
 
-def round_result(value: Decimal) -> Decimal:
+def round_result(value: float) -> float:
     '''
-    На вход подается: число (тип Decimal);
-    Округляет значение Decimal до двух знаков после запятой;
+    На вход подается: число (тип float);
+    Округляет значение float до четырех знаков после запятой;
     Если исходное значение не равно нулю, а после округления получается ноль,
     то возвращает исходное значение;
-    Возвращает: значение типа Decimal;
+    Возвращает: значение типа float;
     '''
-    '''round_value = value.quantize(Decimal("0.0001"), rounding=ROUND_HALF_UP)
-    if value != 0 and round_value == 0 or value == 0:
+    rounded = round(value, 4)
+    if value != 0 and rounded == 0:
         return value
-    return round_value'''
-    def round_result(value: Decimal) -> Decimal:
-        if value == 0 or -1 < value < 1:
-            return value
 
-    return value.quantize(Decimal("0.0001"), rounding=ROUND_HALF_UP)
+    return rounded
 
 
 def validate(tokens: list[str]) -> bool:
@@ -52,13 +48,13 @@ def validate(tokens: list[str]) -> bool:
     return True
 
 
-def apply_operator(left: Decimal, right: Decimal, operator: str) -> Decimal:
+def apply_operator(left: float, right: float, operator: str) -> float:
     '''
-    На вход подается: первое число (тип Decimal), второе число (тип Decimal), арифметический оператор (тип str); 
+    На вход подается: первое число (тип float), второе число (тип float), арифметический оператор (тип str); 
     Работает с положительными и отрицательными, дробными, целыми числами;
     Поддерживает операции: +, -, *, /, %, //;
     Вычисляет выражение в зависимости от оператора;
-    Возвращает: десятичное число (тип Decimal);
+    Возвращает: десятичное число (тип float);
     '''
     if right == 0 and operator in ["%", "//", "/"]:
         raise ZeroDivisionError("ZeroDivision")
@@ -77,7 +73,7 @@ def apply_operator(left: Decimal, right: Decimal, operator: str) -> Decimal:
     else:
         raise ValueError("InvalidSyntax")
 
-def calculate(tokens: list[str]) -> Decimal:
+def calculate(tokens: list[str]) -> float:
     '''
     На вход подается: список элементов (тип list[str]);
     Работает с положительными и отрицательными, дробными, целыми числами;
@@ -85,7 +81,7 @@ def calculate(tokens: list[str]) -> Decimal:
     Поддерживает операции: +, -, *, /, %, //;
     Учитывает приоритет операций;
     Вычисляет выражение по переданному списку токенов;
-    Возвращает: десятичное число (тип Decimal);
+    Возвращает: десятичное число (тип float);
     '''
     numbers = []
     operators = []
@@ -100,7 +96,7 @@ def calculate(tokens: list[str]) -> Decimal:
                 numbers.append(result)
             operators.append(token)
         else:
-            number = Decimal(token)
+            number = float(token)
             numbers.append(number)
     while operators:
         right = numbers.pop()

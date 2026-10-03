@@ -34,7 +34,7 @@ def main() -> int:
             tokens = tokenize(element)
             validate(tokens)
             results = calculate(tokens)
-            print(f"{round_result(results) : f}")
+            print(f"{round_result(results):f}")
 
         elif args.command == "convert":
             value = float(args.value)

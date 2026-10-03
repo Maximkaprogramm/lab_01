@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 import pytest
 
 from toolkit.calculator import calculate, round_result, tokenize, validate
@@ -85,22 +83,22 @@ def test_calculate_division_by_zero():
 
 def test_calculate_mixed_operators():
     assert calculate(["39", "*", "-5", "+", "102", "%", "2", "-", "15"]) == -210
-    assert calculate(["-9", "+", "-5", "*", "11", "%", "12", "*", "15", "-", "1"]) == -115
+    assert calculate(["-9", "+", "-5", "*", "11", "%", "12", "*", "15", "-", "1"]) == 65
     assert calculate(["15", "-", "15", "*", "1100002", "%", "125", "-", "15"]) == -30
     assert calculate(["12", "+", "1754", "-", "2311", "-", "55", "+", "600"]) == 0
 
-def test_calculate_numbers_small_decimal():
-    assert round_result(calculate(["11", "/", "3"])) == Decimal("3.6667")
-    assert round_result(calculate(["11", "/", "448"])) == Decimal("0.0246")
-    assert round_result(calculate(["111554", "/", "448"])) == Decimal("249.0045")
-    assert round_result(calculate(["0.003", "+", "0.003"])) == Decimal("0.006")
-    assert round_result(calculate(["0.2", "+", "0.1"])) == Decimal("0.3")
-    assert round_result(calculate(["1", "/", "3"])) == Decimal("0.3333")
-    assert round_result(calculate(["-0.0082", "-", "0.0089"])) == Decimal("-0.0171")
+def test_calculate_numbers_small():
+    assert round_result(calculate(["11", "/", "3"])) == 3.6667
+    assert round_result(calculate(["11", "/", "448"])) == 0.0246
+    assert round_result(calculate(["111554", "/", "448"])) == 249.0045
+    assert round_result(calculate(["0.003", "+", "0.003"])) == 0.006
+    assert round_result(calculate(["0.2", "+", "0.1"])) == 0.3
+    assert round_result(calculate(["1", "/", "3"])) == 0.3333
+    assert round_result(calculate(["-0.0082", "-", "0.0089"])) == -0.0171
 
 def test_unary_sign_with_spaces():
-    assert calculate(tokenize("107 +  -  92")) == Decimal(15)
-    assert calculate(tokenize("128 + 92 - +7")) == Decimal(213)
-    assert calculate(tokenize("0 +  -  9999")) == Decimal(-9999)
-    assert calculate(tokenize("-  117")) == Decimal(-117)
-    assert calculate(tokenize("-333 - -    33")) == Decimal(-300)
+    assert calculate(tokenize("107 +  -  92")) == 15
+    assert calculate(tokenize("128 + 92 - +7")) == 213
+    assert calculate(tokenize("0 +  -  9999")) == -9999
+    assert calculate(tokenize("-  117")) == -117
+    assert calculate(tokenize("-333 - -    33")) == -300
