@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from toolkit.calculator import calculate, tokenize, validate
+from toolkit.calculator import calculate, round_result, tokenize, validate
 from toolkit.errors import (
     ConsecutiveOperatorsError,
     EmptyExpressionError,
@@ -90,17 +90,17 @@ def test_calculate_mixed_operators():
     assert calculate(["12", "+", "1754", "-", "2311", "-", "55", "+", "600"]) == 0
 
 def test_calculate_numbers_small_decimal():
-    assert calculate(["11", "/", "3"]) == Decimal("3.6667")
-    assert calculate(["11", "/", "448"]) == Decimal("0.0246")
-    assert calculate(["111554", "/", "448"]) == Decimal("249.0045")
-    assert calculate(["0.003", "+", "0.003"]) == Decimal("0.006")
-    assert calculate(["0.2", "+", "0.1"]) == Decimal("0.3")
-    assert calculate(["1", "/", "3"]) == Decimal("0.3333")
-    assert calculate(["-0.0082", "-", "0.0089"]) == Decimal("-0.0171")
+    assert round_result(calculate(["11", "/", "3"])) == Decimal("3.6667")
+    assert round_result(calculate(["11", "/", "448"])) == Decimal("0.0246")
+    assert round_result(calculate(["111554", "/", "448"])) == Decimal("249.0045")
+    assert round_result(calculate(["0.003", "+", "0.003"])) == Decimal("0.006")
+    assert round_result(calculate(["0.2", "+", "0.1"])) == Decimal("0.3")
+    assert round_result(calculate(["1", "/", "3"])) == Decimal("0.3333")
+    assert round_result(calculate(["-0.0082", "-", "0.0089"])) == Decimal("-0.0171")
 
 def test_unary_sign_with_spaces():
-    assert calculate(tokenize("107 +  -  92")) == Decimal("15")
-    assert calculate(tokenize("128 + 92 - +7")) == Decimal("213")
-    assert calculate(tokenize("0 +  -  9999")) == Decimal("-9999")
-    assert calculate(tokenize("-  117")) == Decimal("-117")
-    assert calculate(tokenize("-333 - -    33")) == Decimal("-300")
+    assert calculate(tokenize("107 +  -  92")) == Decimal(15)
+    assert calculate(tokenize("128 + 92 - +7")) == Decimal(213)
+    assert calculate(tokenize("0 +  -  9999")) == Decimal(-9999)
+    assert calculate(tokenize("-  117")) == Decimal(-117)
+    assert calculate(tokenize("-333 - -    33")) == Decimal(-300)

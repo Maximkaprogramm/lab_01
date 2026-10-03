@@ -16,10 +16,15 @@ def round_result(value: Decimal) -> Decimal:
     то возвращает исходное значение;
     Возвращает: значение типа Decimal;
     '''
-    round_value = value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-    if value != 0 and round_value == 0:
+    '''round_value = value.quantize(Decimal("0.0001"), rounding=ROUND_HALF_UP)
+    if value != 0 and round_value == 0 or value == 0:
         return value
-    return round_value
+    return round_value'''
+    def round_result(value: Decimal) -> Decimal:
+        if value == 0 or -1 < value < 1:
+            return value
+
+    return value.quantize(Decimal("0.0001"), rounding=ROUND_HALF_UP)
 
 
 def validate(tokens: list[str]) -> bool:
@@ -103,10 +108,7 @@ def calculate(tokens: list[str]) -> Decimal:
         operator = operators.pop()
         result = apply_operator(left, right, operator)
         numbers.append(result)
-    result = numbers[0]
-    if result == int(result):
-        return int(result)
-    return round(result, 4)
+    return numbers[0]
 
 def precedence(operator: str) -> int:
     '''Определяет приоритет оператора и возвращает число (тип int)'''

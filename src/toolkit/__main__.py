@@ -2,7 +2,7 @@
 import argparse
 import sys
 
-from toolkit.calculator import calculate, tokenize, validate
+from toolkit.calculator import calculate, round_result, tokenize, validate
 from toolkit.converter import converter
 from toolkit.errors import (
     ConsecutiveOperatorsError,
@@ -34,7 +34,7 @@ def main() -> int:
             tokens = tokenize(element)
             validate(tokens)
             results = calculate(tokens)
-            print(results)
+            print(f"{round_result(results) : f}")
 
         elif args.command == "convert":
             value = float(args.value)
