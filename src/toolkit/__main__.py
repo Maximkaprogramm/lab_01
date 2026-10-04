@@ -34,7 +34,7 @@ def main() -> int:
             validate(tokens)
             res_number = calculate(tokens)
             if -0.1 < res_number < 0.1 and res_number != 0:
-                print(f"{res_number:.8f}")
+                print(f"{res_number:.10f}")
             else:
                 print(f"{res_number:.2f}")
 
@@ -44,7 +44,7 @@ def main() -> int:
             to_unit = args.to_unit.lower()
             res_value = converter(value, from_unit, to_unit)
             if -0.1 < res_value < 0.1 and res_value != 0:
-                print(f"{res_value:.8f}")
+                print(f"{res_value:.10f}")
             else:
                 print(f"{res_value:.2f}")
 
