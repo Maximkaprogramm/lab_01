@@ -1,4 +1,4 @@
-
+import math
 import argparse
 import sys
 
@@ -33,20 +33,26 @@ def main() -> int:
             tokens = tokenize(element)
             validate(tokens)
             res_number = calculate(tokens)
+            if math.isfinite(res_number) is False:
+                raise OverflowError("Error: overflow")
             if -0.1 < res_number < 0.1 and res_number != 0:
                 print(f"{res_number:.10f}")
             else:
                 print(f"{res_number:.2f}")
-
         elif args.command == "convert":
             value = float(args.value)
             from_unit = args.from_unit.lower()
             to_unit = args.to_unit.lower()
             res_value = converter(value, from_unit, to_unit)
+            if math.isfinite(res_value) is False:
+                raise OverflowError("Error: overflow")
             if -0.1 < res_value < 0.1 and res_value != 0:
                 print(f"{res_value:.10f}")
             else:
                 print(f"{res_value:.2f}")
+    except OverflowError:
+        print("Error: overflow", file=sys.stderr)
+        return 2
 
 
     except EmptyExpressionError:
