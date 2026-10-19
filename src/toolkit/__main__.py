@@ -33,6 +33,7 @@ def main() -> int:
             tokens = tokenize(element)
             validate(tokens)
             res_number = calculate(tokens)
+            print(repr(res_number))
             if math.isfinite(res_number) is False:
                 raise OverflowError("Error: overflow")
             if -0.1 < res_number < 0.1 and res_number != 0:
