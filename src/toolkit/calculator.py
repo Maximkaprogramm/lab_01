@@ -1,5 +1,3 @@
-
-
 from toolkit.errors import (
     ConsecutiveOperatorsError,
     EmptyExpressionError,
