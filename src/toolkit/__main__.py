@@ -26,6 +26,7 @@ def main() -> int:
     convert_parser.add_argument("--from", dest="from_unit", required=True, help="Исходная единица")
     convert_parser.add_argument("--to", dest="to_unit", required=True, help="Конечная единица")
     args = parser.parse_args()
+    
      
     try:
         if args.command == "calc":
@@ -40,7 +41,11 @@ def main() -> int:
             else:
                 print(f"{res_number:.2f}")
         elif args.command == "convert":
-            value = float(args.value)
+            try:
+                value = float(args.value)
+            except ValueError:
+                raise ValueError("Error: invalid value")
+                return
             from_unit = args.from_unit.lower()
             to_unit = args.to_unit.lower()
             res_value = converter(value, from_unit, to_unit)
@@ -53,6 +58,8 @@ def main() -> int:
     except OverflowError:
         print("Error: overflow", file=sys.stderr)
         return 2
+
+    
 
 
     except EmptyExpressionError:
@@ -87,6 +94,10 @@ def main() -> int:
         return 2
     except UnacceptableTemperatureError:
         print("Error: invalid temperature", file=sys.stderr)
+        return 2
+
+    except ValueError:
+        print("Error: invalid value", file=sys.stderr)
         return 2
     
 

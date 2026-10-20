@@ -81,7 +81,7 @@ python -m toolkit convert VALUE --from UNIT --to UNIT
 ```text
 0 -> 0.00
 ```
-- **если результат выражения из интервала от -0.1 до 0.1 и исходное значение не равно нулю, то выводится число с 10-ю знаками после точки:**
+- **если результат выражения из интервала от -0.1 до 0.1 и исходное значение не равно нулю, то выводится число с 10-ю знаками после точки!**
 
 - **дробные и целые числа выводятся с 2-мя знаками после точки:**
 ```text
@@ -130,19 +130,19 @@ pytest -v или pytest -vv (ещё подробнее)
 lab_01/
 |── src/
 |   └── toolkit/
-|       |── __init__.py       # пакет toolkit
-|       |── __main__.py       # запуск программы через командную строку (CLI)
-|       |── calculator.py     # логика калькулятора
-|       |── converter.py      # логика конвертера
-|       └── errors.py         # классы ошибок, созданные пользователем
+|       |── __init__.py       
+|       |── __main__.py        
+|       |── calculator.py   
+|       |── converter.py       
+|       └── errors.py         
 |
 |── tests/
-|   |── test_calculator.py    # тесты для калькулятора
-|   |── test_converter.py     # тесты для конвертера
-|   └── test_main.py          # тесты для командного интерфейса (CLI)
+|   |── test_calculator.py    
+|   |── test_converter.py    
+|   └── test_main.py          
 |
-|── README.md                 # документация проекта
-|── requirements.txt          # зависимости проекта
-|── pyproject.toml            # настройки проекта
-└── .gitignore                # исключения для Git
+|── README.md                 
+|── requirements.txt          
+|── pyproject.toml            
+└── .gitignore                
 ```

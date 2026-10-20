@@ -108,37 +108,48 @@ def tokenize(string: str) -> list[str]:
     current = ""
     expect_number = True
     i = 0
+
     while i < len(string):
         char = string[i]
-        if char.isdigit():
+        if char.isspace():
+            i += 1
+            continue
+        if char.isdigit() or char == "." and current.count(".") == 0:
             current += char
             expect_number = False
-        elif char == "." and "." not in current and len(current) > 0 or char in "+-" and expect_number is True:
-            current += char
-        elif char in "+-*/%":
-            if char == "/" and (i + 1) < len(string) and string[i + 1] == "/":
-                if current:
-                    tokens.append(current)
-                    current = ""
-                tokens.append("//")
-                expect_number = True
-                i += 1
+        elif char in "+-" and expect_number is True:
+            sg = char
+            j = i + 1
+            while j < len(string) and string[j].isspace():
+                j += 1
+            if j < len(string) and string[j] in "+-":
+                rg_sg = string[j]
+                if sg == rg_sg:
+                    sg = "+"
+                else: 
+                    sg = "-"
+                i = j
+            if len(current) > 0:
+                current += sg
             else:
-                if current:
-                    tokens.append(current)
-                    current = ""
-                tokens.append(char)
-                expect_number = True
-        elif char.isspace():
-            if len(current) > 0 and current not in "+-":
+                current = sg
+
+        elif char in "+-*/%":
+            if current:
                 tokens.append(current)
                 current = ""
+            if char == "/" and (i + 1) < len(string) and string[i + 1] == "/":
+                tokens.append("//")
+                i += 1
+            else:
+                tokens.append(char)
+            expect_number = True
         else:
             raise InvalidSymbolError("Invalid symbol")
         i += 1
+
     if current:
         tokens.append(current)
-        current = ""
     if not tokens:
         raise EmptyExpressionError("Empty expression")
     return tokens
