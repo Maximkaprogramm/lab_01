@@ -126,7 +126,7 @@ pytest -v или pytest -vv (ещё подробнее)
 ```text
 ## Структура проекта
 
-```text
+```
 lab_01/
 |── src/
 |   └── toolkit/
